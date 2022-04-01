@@ -1,6 +1,11 @@
 export const INITIAL_STATE = {
-  user: {},
-  wallet: {},
+  user: {
+    email: '',
+  },
+  wallet: {
+    currencies: [],
+    expenses: [],
+  },
   isLoading: false,
 };
 
