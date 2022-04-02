@@ -1,4 +1,4 @@
-import getCurrentRatios from '../../services/CurrenciesAPI';
+import getCurrentRatios from '../services/CurrenciesAPI';
 import {
   ADD_WALLET,
   DEL_WALLET,
@@ -33,12 +33,14 @@ export const receiveCurrenciesFailure = (error) => ({
 });
 
 export function fetchCurrencies() {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(requestCurrencies());
     try {
+      console.log('State Inicial', getState());
       const currencies = await getCurrentRatios();
       const data = Object.keys(currencies);
       dispatch(receiveCurrenciesSuccess(data));
+      console.log('State Atualizado', getState());
     } catch (error) {
       dispatch(receiveCurrenciesFailure(error));
     }

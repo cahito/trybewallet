@@ -3,14 +3,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import AddExpense from '../components/AddExpense';
 import Header from '../components/Header';
-import { fetchCurrencies } from '../redux/actions';
+import { fetchCurrencies } from '../actions';
 
 class Wallet extends React.Component {
-  constructor() {
-    super();
-    // const { loading } = this.props;
+  constructor(props) {
+    super(props);
+    const { loading } = this.props;
     this.state = {
-      isLoading: false, // loading,
+      isLoading: loading,
     };
   }
 
@@ -33,9 +33,9 @@ class Wallet extends React.Component {
   }
 }
 
-/* const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
   loading: state.wallet.isFetching,
-}); */
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrencies: () => dispatch(fetchCurrencies()),
@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Wallet.propTypes = {
   getCurrencies: PropTypes.func.isRequired,
-  // loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Wallet);
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
