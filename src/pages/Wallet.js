@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import AddExpense from '../components/AddExpense';
 import Header from '../components/Header';
 import { fetchCurrencies } from '../actions';
+import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -15,8 +16,14 @@ class Wallet extends React.Component {
   }
 
   async componentDidMount() {
-    const { getCurrencies } = this.props;
+    const { isLoading } = this.state;
+    console.log(isLoading);
+    const { getCurrencies, loading } = this.props;
     await getCurrencies();
+    this.setState({
+      isLoading: loading,
+    });
+    console.log(isLoading);
   }
 
   render() {
@@ -24,10 +31,10 @@ class Wallet extends React.Component {
     return (
       <>
         <Header />
-        <AddExpense />
         { isLoading
           ? <div>Carregando...</div>
-          : <div>Trybe Wallet</div> }
+          : <AddExpense /> }
+        <ExpensesTable />
       </>
     );
   }

@@ -1,7 +1,9 @@
 import { LOGIN } from '../actions/actionTypes';
 
 // Esse reducer será responsável por tratar as informações da pessoa usuária
-const initialState = {};
+const initialState = {
+  email: 'teste@testeStore.com',
+};
 
 function user(state = initialState, action) {
   switch (action.type) {
