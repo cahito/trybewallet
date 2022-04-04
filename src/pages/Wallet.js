@@ -7,31 +7,17 @@ import { fetchCurrencies } from '../actions';
 import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
-  constructor(props) {
-    super(props);
-    const { loading } = this.props;
-    this.state = {
-      isLoading: loading,
-    };
-  }
-
   async componentDidMount() {
-    const { isLoading } = this.state;
-    console.log(isLoading);
-    const { getCurrencies, loading } = this.props;
+    const { getCurrencies } = this.props;
     await getCurrencies();
-    this.setState({
-      isLoading: loading,
-    });
-    console.log(isLoading);
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { loading } = this.props;
     return (
       <>
         <Header />
-        { isLoading
+        { loading
           ? <div>Carregando...</div>
           : <AddExpense /> }
         <ExpensesTable />

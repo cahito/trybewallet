@@ -5,19 +5,12 @@ import { connect } from 'react-redux';
 class AddExpense extends React.Component {
   constructor(props) {
     super(props);
-    const { currencies, loading } = this.props;
     this.state = {
-      currencies,
       description: '',
-      isLoading: loading,
-      method: '',
-      tag: '',
+      // method: '',
+      // tag: '',
       value: 0,
     };
-  }
-
-  componentDidMount() {
-    console.log('AddExpense montou');
   }
 
   handleChange = ({ target }) => {
@@ -27,21 +20,12 @@ class AddExpense extends React.Component {
     });
   }
 
-  mapCurrencies = async () => {
-    const { currencies } = this.props;
-    const temporary = await currencies;
-    const arrayOfCurrencies = temporary
-      .map((eachOne, index) => <option key={ index }>{eachOne}</option>);
-    console.log(arrayOfCurrencies);
-    return arrayOfCurrencies;
-  }
-
   render() {
-    const { currencies, description, isLoading, value } = this.state;
+    const { description, value } = this.state;
+    const { currencies, loading } = this.props;
     return (
-      <form className="d-flex p-3 bg-secondary text-white">
-
-        <div className="input-group">
+      <form className="d-flex p-2 bg-secondary text-white">
+        <div className="input-group col">
           <label htmlFor="value">
             Valor:
             {' '}
@@ -55,7 +39,7 @@ class AddExpense extends React.Component {
             value={ value }
           />
         </div>
-        <div className="input-group">
+        <div className="input-group col">
           <label htmlFor="currency">
             Moeda:
             {' '}
@@ -66,13 +50,14 @@ class AddExpense extends React.Component {
             name="currency"
             type="number"
           >
-            { isLoading
-              ? <option>USD</option>
-              : currencies}
+            { console.log(currencies) }
+            { loading
+              ? <option>Carregando...</option>
+              : currencies
+                .map((eachOne, index) => <option key={ index }>{eachOne}</option>) }
           </select>
-
         </div>
-        <div className="input-group">
+        <div className="input-group col">
           <label htmlFor="method">
             Método de pagamento:
             {' '}
@@ -90,7 +75,7 @@ class AddExpense extends React.Component {
           </select>
 
         </div>
-        <div className="input-group">
+        <div className="input-group col">
           <label htmlFor="tag">
             Categoria:
             {' '}
@@ -109,7 +94,7 @@ class AddExpense extends React.Component {
           </select>
 
         </div>
-        <div className="input-group">
+        <div className="input-group col">
           <label htmlFor="description">
             Descrição:
             {' '}
@@ -122,18 +107,27 @@ class AddExpense extends React.Component {
             type="text"
             value={ description }
           />
-
         </div>
-
+        <div className="input-group col">
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Adicionar despesa
+          </button>
+        </div>
       </form>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  currencies: state.wallet.currencies,
-  loading: state.wallet.isFetching,
-});
+const mapStateToProps = (state) => {
+  console.log('StatetoProps do AddExpense', state);
+  return {
+    currencies: state.wallet.currencies,
+    loading: state.wallet.isFetching,
+  };
+};
 
 AddExpense.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
