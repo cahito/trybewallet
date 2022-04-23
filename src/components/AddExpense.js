@@ -3,14 +3,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addExpense, fetchRatios } from '../actions';
 
+const USD = 'USD';
+const DINHEIRO = 'Dinheiro';
+const ALIMENTACAO = 'Alimentação';
+
 class AddExpense extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: 'USD',
+      currency: USD,
       description: '',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      method: DINHEIRO,
+      tag: ALIMENTACAO,
       value: 0,
     };
   }
@@ -52,10 +56,10 @@ class AddExpense extends React.Component {
     };
     dispatchAddExpense(expense);
     this.setState({
-      currency: 'USD',
+      currency: USD,
       description: '',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      method: DINHEIRO,
+      tag: ALIMENTACAO,
       value: 0,
     });
   }
