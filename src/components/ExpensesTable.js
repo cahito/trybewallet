@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { delExpense, editExpense } from '../actions';
+import ExpensesLines from './ExpensesLines';
 
 class ExpensesTable extends React.Component {
   constructor(props) {
@@ -11,29 +13,8 @@ class ExpensesTable extends React.Component {
     };
   }
 
-  selectRow = () => {
-
-  }
-
-  mountTable = () => {
-    const { expenses } = this.props;
-    expenses.map((eachExpense, index) => (
-      <tr key={ index } id={ index }>
-        <th>{index + 1}</th>
-        <td>{eachExpense}</td>
-        <td>{eachExpense}</td>
-        <td>{eachExpense}</td>
-        <td>{eachExpense}</td>
-        <td>{eachExpense}</td>
-        <td>{eachExpense}</td>
-        <td>{eachExpense}</td>
-        <td>Real</td>
-        <td>XD</td>
-      </tr>
-    ));
-  }
-
   render() {
+    const { expenses } = this.props;
     return (
       <table className="table table-hover table-striped table-bordered">
         <thead className="table-success">
@@ -51,20 +32,14 @@ class ExpensesTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {/* <tr>
-            <th>1</th>
-            <td>Jantar caro</td>
-            <td>Alimentação</td>
-            <td>Cartão de crédito</td>
-            <td>104.50</td>
-            <td>USD</td>
-            <td>4.67</td>
-            <td>488.015</td>
-            <td>Real</td>
-            <td>XD</td>
-          </tr> */}
-          { this.mountTable() }
+          {/* { console.log(expenses) } */}
+          { expenses && <ExpensesLines /> }
         </tbody>
+        <tfoot>
+          <tr>
+            <th>Fim</th>
+          </tr>
+        </tfoot>
       </table>
     );
   }
@@ -74,13 +49,15 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-const mapDispatchToProps = () => ({
-  // getCurrencies: () => dispatch(fetchCurrencies()),
+const mapDispatchToProps = (dispatch) => ({
+  dispatchDeleteExpense: (expense) => dispatch(delExpense(expense)),
+  dispatchEditExpense: (expense) => dispatch(editExpense(expense)),
 });
 
 ExpensesTable.propTypes = {
-  // getCurrencies: PropTypes.func.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+  dispatchDeleteExpense: PropTypes.func,
+  dispatchEditExpense: PropTypes.func,
+  expenses: PropTypes.arrayOf(PropTypes.object),
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);

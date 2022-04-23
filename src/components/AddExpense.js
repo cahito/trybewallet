@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { addExpense, fetchRatios } from '../actions';
 
 class AddExpense extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currency: 'USD',
       description: '',
-      // method: '',
-      // tag: '',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       value: 0,
     };
   }
@@ -20,9 +22,47 @@ class AddExpense extends React.Component {
     });
   }
 
+  handleClick = async () => {
+    const { getRatios } = this.props;
+    await getRatios();
+    const { dispatchAddExpense, expensesQuantity, ratios } = this.props;
+    const {
+      currency,
+      description,
+      method,
+      tag,
+      value,
+    } = this.state;
+    /* console.log('ratios', ratios);
+    console.log('dispatchAddExpense', dispatchAddExpense);
+    console.log('expensesQuantity', expensesQuantity);
+    console.log('currency', currency);
+    console.log('description', description);
+    console.log('method', method);
+    console.log('tag', tag);
+    console.log('value', value); */
+    const expense = {
+      id: expensesQuantity,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: ratios,
+    };
+    dispatchAddExpense(expense);
+    this.setState({
+      currency: 'USD',
+      description: '',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      value: 0,
+    });
+  }
+
   render() {
-    const { description, value } = this.state;
-    const { currencies, loading } = this.props;
+    const { currency, description, method, tag, value } = this.state;
+    const { currencies } = this.props;
     return (
       <form className="d-flex p-2 bg-secondary text-white">
         <div className="input-group col">
@@ -48,13 +88,14 @@ class AddExpense extends React.Component {
             data-testid="currency-input"
             id="currency"
             name="currency"
+            onChange={ this.handleChange }
             type="number"
+            value={ currency }
           >
-            { console.log(currencies) }
-            { loading
-              ? <option>Carregando...</option>
-              : currencies
-                .map((eachOne, index) => <option key={ index }>{eachOne}</option>) }
+            {currencies
+              ? currencies
+                .map((eachOne, index) => <option key={ index }>{eachOne}</option>)
+              : <option>Carregando...</option>}
           </select>
         </div>
         <div className="input-group col">
@@ -66,8 +107,9 @@ class AddExpense extends React.Component {
             data-testid="method-input"
             id="method"
             name="method"
-            onChange={ this.handleOnChange }
+            onChange={ this.handleChange }
             type="text"
+            value={ method }
           >
             <option>Dinheiro</option>
             <option>Cartão de crédito</option>
@@ -84,7 +126,9 @@ class AddExpense extends React.Component {
             data-testid="tag-input"
             id="tag"
             name="tag"
+            onChange={ this.handleChange }
             type="text"
+            value={ tag }
           >
             <option>Alimentação</option>
             <option>Lazer</option>
@@ -110,8 +154,9 @@ class AddExpense extends React.Component {
         </div>
         <div className="input-group col">
           <button
-            type="button"
+            className="btn btn-success"
             onClick={ this.handleClick }
+            type="button"
           >
             Adicionar despesa
           </button>
@@ -121,17 +166,24 @@ class AddExpense extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log('StatetoProps do AddExpense', state);
-  return {
-    currencies: state.wallet.currencies,
-    loading: state.wallet.isFetching,
-  };
-};
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+  expensesQuantity: state.wallet.expenses.length,
+  loading: state.wallet.isFetching,
+  ratios: state.wallet.ratios,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchAddExpense: (expense) => dispatch(addExpense(expense)),
+  getRatios: () => dispatch(fetchRatios()),
+});
 
 AddExpense.propTypes = {
-  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  loading: PropTypes.bool.isRequired,
-};
+  currencies: PropTypes.arrayOf(PropTypes.string),
+  dispatchAddExpense: PropTypes.func,
+  getRatios: PropTypes.func,
+  expensesQuantity: PropTypes.number,
+  loading: PropTypes.bool,
+}.isRequired;
 
-export default connect(mapStateToProps)(AddExpense);
+export default connect(mapStateToProps, mapDispatchToProps)(AddExpense);
