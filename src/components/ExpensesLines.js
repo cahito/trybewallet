@@ -23,8 +23,8 @@ class ExpensesLines extends React.Component {
         <td>{ tag }</td>
         <td>{ method }</td>
         <td>{ (parseFloat(value, TEN)).toFixed(2) }</td>
-        <td>{ currency }</td>
-        <td>{ exchangeRates[currency].ask }</td>
+        <td>{ exchangeRates[currency].name }</td>
+        <td>{ (parseFloat(exchangeRates[currency].ask, TEN)).toFixed(2) }</td>
         <td className="converted">
           {
             (value * exchangeRates[currency].ask).toFixed(2)
