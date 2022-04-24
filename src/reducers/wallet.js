@@ -204,8 +204,14 @@ function wallet(state = initialState, action) {
       ...state,
       expenses: [...state.expenses, action.value],
     };
-  case DEL_WALLET:
-    return action.value;
+  case DEL_WALLET: {
+    console.log(action.value);
+    const newExpense = state.expenses.filter((e) => e.id !== parseInt(action.value, 10));
+    return {
+      ...state,
+      expenses: newExpense,
+    };
+  }
   case EDIT_WALLET:
     return action.value;
   case REQUEST_CURRENT_RATIOS:

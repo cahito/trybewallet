@@ -1,13 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { delExpense, editExpense } from '../actions';
 
 const TEN = 10;
 
 class ExpensesLines extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    const { expenses } = this.props;
+    if (expenses !== nextProps.expenses) {
+      // this.mountTable();
+      return true;
+    }
+    return false;
+  }
+
+  componentDidUpdate() {
+    this.mountTable();
+  }
+
   mountTable = () => {
     const { expenses } = this.props;
-    // console.log('mountTable', expenses);
     return expenses.map(({
       id,
       description,
@@ -56,7 +69,9 @@ class ExpensesLines extends React.Component {
 
   handleDelete = ({ target }) => {
     const { dispatchDeleteExpense } = this.props;
-    dispatchDeleteExpense(target);
+    const rowID = target.parentNode.parentNode.id;
+    console.log('dispatch rowID', rowID);
+    dispatchDeleteExpense(rowID);
   }
 
   handleEdit = ({ target }) => {
@@ -76,10 +91,15 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchDeleteExpense: (expense) => dispatch(delExpense(expense)),
+  dispatchEditExpense: (expense) => dispatch(editExpense(expense)),
+});
+
 ExpensesLines.propTypes = {
-  // dispatchDeleteExpense: PropTypes.func,
+  dispatchDeleteExpense: PropTypes.func,
   // dispatchEditExpense: PropTypes.func,
   expenses: PropTypes.arrayOf(PropTypes.object),
 }.isRequired;
 
-export default connect(mapStateToProps)(ExpensesLines);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesLines);

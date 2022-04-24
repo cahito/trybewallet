@@ -14,9 +14,9 @@ class Header extends React.Component {
     };
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     this.sumExpenses();
-  } */
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     const { expenses } = this.props;

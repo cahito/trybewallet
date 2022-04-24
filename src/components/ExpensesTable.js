@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { delExpense, editExpense } from '../actions';
 import ExpensesLines from './ExpensesLines';
 
 class ExpensesTable extends React.Component {
@@ -49,15 +48,10 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchDeleteExpense: (expense) => dispatch(delExpense(expense)),
-  dispatchEditExpense: (expense) => dispatch(editExpense(expense)),
-});
-
 ExpensesTable.propTypes = {
   dispatchDeleteExpense: PropTypes.func,
   dispatchEditExpense: PropTypes.func,
   expenses: PropTypes.arrayOf(PropTypes.object),
 }.isRequired;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
+export default connect(mapStateToProps)(ExpensesTable);
