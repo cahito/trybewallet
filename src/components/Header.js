@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import EditExpense from './EditExpense';
 
 const TEN = 10;
 
@@ -51,7 +50,6 @@ class Header extends React.Component {
   }
 
   render() {
-    const { isEditable } = this.props;
     const { totalValue, userEmail } = this.state;
     return (
       <header className="p-3 bg-dark text-white">
@@ -62,7 +60,6 @@ class Header extends React.Component {
             <div className="col-2" data-testid="total-field">{totalValue}</div>
           </div>
         </div>
-        { isEditable && <EditExpense /> }
       </header>
     );
   }

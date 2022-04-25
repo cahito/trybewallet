@@ -6,7 +6,6 @@ import { addExpense, fetchRatios } from '../actions';
 const USD = 'USD';
 const DINHEIRO = 'Dinheiro';
 const ALIMENTACAO = 'Alimentação';
-const editTable = <p>Edição disponível</p>;
 
 class AddExpense extends React.Component {
   constructor(props) {
@@ -59,108 +58,106 @@ class AddExpense extends React.Component {
 
   render() {
     const { currency, description, method, tag, value } = this.state;
-    const { currencies, isEditable } = this.props;
+    const { currencies } = this.props;
     return (
-      isEditable
-        ? editTable
-        : <form className="d-flex p-2 bg-secondary text-white">
-          <div className="input-group col">
-            <label htmlFor="value">
-              Valor:
-              {' '}
-            </label>
-            <input
-              data-testid="value-input"
-              id="value"
-              name="value"
-              onChange={ this.handleChange }
-              type="number"
-              value={ value }
-            />
-          </div>
-          <div className="input-group col">
-            <label htmlFor="currency">
-              Moeda:
-              {' '}
-            </label>
-            <select
-              data-testid="currency-input"
-              id="currency"
-              name="currency"
-              onChange={ this.handleChange }
-              type="number"
-              value={ currency }
-            >
-              {currencies
-                ? currencies
-                  .map((eachOne, index) => <option key={ index }>{eachOne}</option>)
-                : <option>Carregando...</option>}
-            </select>
-          </div>
-          <div className="input-group col">
-            <label htmlFor="method">
-              Método de pagamento:
-              {' '}
-            </label>
-            <select
-              data-testid="method-input"
-              id="method"
-              name="method"
-              onChange={ this.handleChange }
-              type="text"
-              value={ method }
-            >
-              <option>Dinheiro</option>
-              <option>Cartão de crédito</option>
-              <option>Cartão de débito</option>
-            </select>
+      <form className="d-flex p-2 bg-secondary text-white">
+        <div className="input-group col">
+          <label htmlFor="value">
+            Valor:
+            {' '}
+          </label>
+          <input
+            data-testid="value-input"
+            id="value"
+            name="value"
+            onChange={ this.handleChange }
+            type="number"
+            value={ value }
+          />
+        </div>
+        <div className="input-group col">
+          <label htmlFor="currency">
+            Moeda:
+            {' '}
+          </label>
+          <select
+            data-testid="currency-input"
+            id="currency"
+            name="currency"
+            onChange={ this.handleChange }
+            type="number"
+            value={ currency }
+          >
+            {currencies
+              ? currencies
+                .map((eachOne, index) => <option key={ index }>{eachOne}</option>)
+              : <option>Carregando...</option>}
+          </select>
+        </div>
+        <div className="input-group col">
+          <label htmlFor="method">
+            Método de pagamento:
+            {' '}
+          </label>
+          <select
+            data-testid="method-input"
+            id="method"
+            name="method"
+            onChange={ this.handleChange }
+            type="text"
+            value={ method }
+          >
+            <option>Dinheiro</option>
+            <option>Cartão de crédito</option>
+            <option>Cartão de débito</option>
+          </select>
 
-          </div>
-          <div className="input-group col">
-            <label htmlFor="tag">
-              Categoria:
-              {' '}
-            </label>
-            <select
-              data-testid="tag-input"
-              id="tag"
-              name="tag"
-              onChange={ this.handleChange }
-              type="text"
-              value={ tag }
-            >
-              <option>Alimentação</option>
-              <option>Lazer</option>
-              <option>Trabalho</option>
-              <option>Transporte</option>
-              <option>Saúde</option>
-            </select>
+        </div>
+        <div className="input-group col">
+          <label htmlFor="tag">
+            Categoria:
+            {' '}
+          </label>
+          <select
+            data-testid="tag-input"
+            id="tag"
+            name="tag"
+            onChange={ this.handleChange }
+            type="text"
+            value={ tag }
+          >
+            <option>Alimentação</option>
+            <option>Lazer</option>
+            <option>Trabalho</option>
+            <option>Transporte</option>
+            <option>Saúde</option>
+          </select>
 
-          </div>
-          <div className="input-group col">
-            <label htmlFor="description">
-              Descrição:
-              {' '}
-            </label>
-            <input
-              data-testid="description-input"
-              id="description"
-              name="description"
-              onChange={ this.handleChange }
-              type="text"
-              value={ description }
-            />
-          </div>
-          <div className="input-group col">
-            <button
-              className="btn btn-success"
-              onClick={ this.handleClick }
-              type="button"
-            >
-              Adicionar despesa
-            </button>
-          </div>
-        </form>
+        </div>
+        <div className="input-group col">
+          <label htmlFor="description">
+            Descrição:
+            {' '}
+          </label>
+          <input
+            data-testid="description-input"
+            id="description"
+            name="description"
+            onChange={ this.handleChange }
+            type="text"
+            value={ description }
+          />
+        </div>
+        <div className="input-group col">
+          <button
+            className="btn btn-success"
+            onClick={ this.handleClick }
+            type="button"
+          >
+            Adicionar despesa
+          </button>
+        </div>
+      </form>
     );
   }
 }
