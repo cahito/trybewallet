@@ -2,6 +2,7 @@ import {
   ADD_WALLET,
   DEL_WALLET,
   EDIT_WALLET,
+  UPDATE_WALLET,
   RECEIVE_CURR_FAILURE,
   RECEIVE_RATIOS_FAILURE,
   RECEIVE_CURR_SUCCESS,
@@ -175,7 +176,9 @@ import {
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const initialState = {
   currencies: [],
+  editID: 0,
   expenses: [],
+  isEditable: false,
   isFetching: false,
   ratios: [],
 };
@@ -183,21 +186,18 @@ const initialState = {
 function wallet(state = initialState, action) {
   switch (action.type) {
   case REQUEST_CURRENCIES:
-    return {
-      ...state,
-      isFetching: true,
-    };
+    return { ...state, isFetching: true };
   case RECEIVE_CURR_SUCCESS:
     return {
       ...state,
-      isFetching: false,
       currencies: action.currencies,
+      isFetching: false,
     };
   case RECEIVE_CURR_FAILURE:
     return {
       ...state,
-      isFetching: false,
       error: action.error,
+      isFetching: false,
     };
   case ADD_WALLET:
     return {
@@ -205,29 +205,23 @@ function wallet(state = initialState, action) {
       expenses: [...state.expenses, action.value],
     };
   case DEL_WALLET: {
-    console.log(action.value);
     const newExpense = state.expenses.filter((e) => e.id !== parseInt(action.value, 10));
-    return {
-      ...state,
-      expenses: newExpense,
-    };
+    return { ...state, expenses: newExpense };
   }
-  case EDIT_WALLET:
-    return action.value;
+  case EDIT_WALLET: {
+    return { ...state, editID: parseInt(action.value, 10), isEditable: true };
+  }
+  case UPDATE_WALLET: {
+    const newExpense = state.expenses.filter((e) => e.id !== action.value);
+    newExpense.splice(action.value, 0, action.value2);
+    return { ...state, expenses: newExpense, isEditable: false };
+  }
   case REQUEST_CURRENT_RATIOS:
-    return {
-      ...state,
-    };
+    return { ...state };
   case RECEIVE_RATIOS_SUCCESS:
-    return {
-      ...state,
-      ratios: action.ratios,
-    };
+    return { ...state, ratios: action.ratios };
   case RECEIVE_RATIOS_FAILURE:
-    return {
-      ...state,
-      error: action.error,
-    };
+    return { ...state, error: action.error };
   default:
     return state;
   }

@@ -6,6 +6,7 @@ import { addExpense, fetchRatios } from '../actions';
 const USD = 'USD';
 const DINHEIRO = 'Dinheiro';
 const ALIMENTACAO = 'Alimentação';
+const editTable = <p>Edição disponível</p>;
 
 class AddExpense extends React.Component {
   constructor(props) {
@@ -37,14 +38,6 @@ class AddExpense extends React.Component {
       tag,
       value,
     } = this.state;
-    /* console.log('ratios', ratios);
-    console.log('dispatchAddExpense', dispatchAddExpense);
-    console.log('expensesQuantity', expensesQuantity);
-    console.log('currency', currency);
-    console.log('description', description);
-    console.log('method', method);
-    console.log('tag', tag);
-    console.log('value', value); */
     const expense = {
       id: expensesQuantity,
       value,
@@ -66,106 +59,108 @@ class AddExpense extends React.Component {
 
   render() {
     const { currency, description, method, tag, value } = this.state;
-    const { currencies } = this.props;
+    const { currencies, isEditable } = this.props;
     return (
-      <form className="d-flex p-2 bg-secondary text-white">
-        <div className="input-group col">
-          <label htmlFor="value">
-            Valor:
-            {' '}
-          </label>
-          <input
-            data-testid="value-input"
-            id="value"
-            name="value"
-            onChange={ this.handleChange }
-            type="number"
-            value={ value }
-          />
-        </div>
-        <div className="input-group col">
-          <label htmlFor="currency">
-            Moeda:
-            {' '}
-          </label>
-          <select
-            data-testid="currency-input"
-            id="currency"
-            name="currency"
-            onChange={ this.handleChange }
-            type="number"
-            value={ currency }
-          >
-            {currencies
-              ? currencies
-                .map((eachOne, index) => <option key={ index }>{eachOne}</option>)
-              : <option>Carregando...</option>}
-          </select>
-        </div>
-        <div className="input-group col">
-          <label htmlFor="method">
-            Método de pagamento:
-            {' '}
-          </label>
-          <select
-            data-testid="method-input"
-            id="method"
-            name="method"
-            onChange={ this.handleChange }
-            type="text"
-            value={ method }
-          >
-            <option>Dinheiro</option>
-            <option>Cartão de crédito</option>
-            <option>Cartão de débito</option>
-          </select>
+      isEditable
+        ? editTable
+        : <form className="d-flex p-2 bg-secondary text-white">
+          <div className="input-group col">
+            <label htmlFor="value">
+              Valor:
+              {' '}
+            </label>
+            <input
+              data-testid="value-input"
+              id="value"
+              name="value"
+              onChange={ this.handleChange }
+              type="number"
+              value={ value }
+            />
+          </div>
+          <div className="input-group col">
+            <label htmlFor="currency">
+              Moeda:
+              {' '}
+            </label>
+            <select
+              data-testid="currency-input"
+              id="currency"
+              name="currency"
+              onChange={ this.handleChange }
+              type="number"
+              value={ currency }
+            >
+              {currencies
+                ? currencies
+                  .map((eachOne, index) => <option key={ index }>{eachOne}</option>)
+                : <option>Carregando...</option>}
+            </select>
+          </div>
+          <div className="input-group col">
+            <label htmlFor="method">
+              Método de pagamento:
+              {' '}
+            </label>
+            <select
+              data-testid="method-input"
+              id="method"
+              name="method"
+              onChange={ this.handleChange }
+              type="text"
+              value={ method }
+            >
+              <option>Dinheiro</option>
+              <option>Cartão de crédito</option>
+              <option>Cartão de débito</option>
+            </select>
 
-        </div>
-        <div className="input-group col">
-          <label htmlFor="tag">
-            Categoria:
-            {' '}
-          </label>
-          <select
-            data-testid="tag-input"
-            id="tag"
-            name="tag"
-            onChange={ this.handleChange }
-            type="text"
-            value={ tag }
-          >
-            <option>Alimentação</option>
-            <option>Lazer</option>
-            <option>Trabalho</option>
-            <option>Transporte</option>
-            <option>Saúde</option>
-          </select>
+          </div>
+          <div className="input-group col">
+            <label htmlFor="tag">
+              Categoria:
+              {' '}
+            </label>
+            <select
+              data-testid="tag-input"
+              id="tag"
+              name="tag"
+              onChange={ this.handleChange }
+              type="text"
+              value={ tag }
+            >
+              <option>Alimentação</option>
+              <option>Lazer</option>
+              <option>Trabalho</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
+            </select>
 
-        </div>
-        <div className="input-group col">
-          <label htmlFor="description">
-            Descrição:
-            {' '}
-          </label>
-          <input
-            data-testid="description-input"
-            id="description"
-            name="description"
-            onChange={ this.handleChange }
-            type="text"
-            value={ description }
-          />
-        </div>
-        <div className="input-group col">
-          <button
-            className="btn btn-success"
-            onClick={ this.handleClick }
-            type="button"
-          >
-            Adicionar despesa
-          </button>
-        </div>
-      </form>
+          </div>
+          <div className="input-group col">
+            <label htmlFor="description">
+              Descrição:
+              {' '}
+            </label>
+            <input
+              data-testid="description-input"
+              id="description"
+              name="description"
+              onChange={ this.handleChange }
+              type="text"
+              value={ description }
+            />
+          </div>
+          <div className="input-group col">
+            <button
+              className="btn btn-success"
+              onClick={ this.handleClick }
+              type="button"
+            >
+              Adicionar despesa
+            </button>
+          </div>
+        </form>
     );
   }
 }
@@ -173,6 +168,7 @@ class AddExpense extends React.Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expensesQuantity: state.wallet.expenses.length,
+  isEditable: state.wallet.isEditable,
   loading: state.wallet.isFetching,
   ratios: state.wallet.ratios,
 });
@@ -187,6 +183,7 @@ AddExpense.propTypes = {
   dispatchAddExpense: PropTypes.func,
   getRatios: PropTypes.func,
   expensesQuantity: PropTypes.number,
+  isEditable: PropTypes.bool,
   loading: PropTypes.bool,
 }.isRequired;
 

@@ -6,10 +6,14 @@ import { delExpense, editExpense } from '../actions';
 const TEN = 10;
 
 class ExpensesLines extends React.Component {
+  /* componentDidMount() {
+    this.mountTable();
+  }
+
   shouldComponentUpdate(nextProps) {
     const { expenses } = this.props;
     if (expenses !== nextProps.expenses) {
-      // this.mountTable();
+      this.forceUpdate();
       return true;
     }
     return false;
@@ -17,7 +21,7 @@ class ExpensesLines extends React.Component {
 
   componentDidUpdate() {
     this.mountTable();
-  }
+  } */
 
   mountTable = () => {
     const { expenses } = this.props;
@@ -51,7 +55,7 @@ class ExpensesLines extends React.Component {
             onClick={ this.handleEdit }
             type="button"
           >
-            Editar despesa
+            Editar
           </button>
           {' '}
           <button
@@ -70,13 +74,13 @@ class ExpensesLines extends React.Component {
   handleDelete = ({ target }) => {
     const { dispatchDeleteExpense } = this.props;
     const rowID = target.parentNode.parentNode.id;
-    console.log('dispatch rowID', rowID);
     dispatchDeleteExpense(rowID);
   }
 
   handleEdit = ({ target }) => {
     const { dispatchEditExpense } = this.props;
-    dispatchEditExpense(target);
+    const rowID = target.parentNode.parentNode.id;
+    dispatchEditExpense(rowID);
   }
 
   render() {
@@ -98,7 +102,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 ExpensesLines.propTypes = {
   dispatchDeleteExpense: PropTypes.func,
-  // dispatchEditExpense: PropTypes.func,
+  dispatchEditExpense: PropTypes.func,
   expenses: PropTypes.arrayOf(PropTypes.object),
 }.isRequired;
 

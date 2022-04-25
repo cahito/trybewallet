@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import EditExpense from './EditExpense';
 
 const TEN = 10;
 
@@ -19,10 +20,13 @@ class Header extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { expenses } = this.props;
+    const { expenses, isEditable } = this.props;
     const { totalValue } = this.state;
     if (expenses !== nextProps.expenses) {
       this.sumExpenses();
+      return true;
+    }
+    if (isEditable !== nextProps.isEditable) {
       return true;
     }
     if (totalValue !== nextState.totalValue) {
@@ -47,6 +51,7 @@ class Header extends React.Component {
   }
 
   render() {
+    const { isEditable } = this.props;
     const { totalValue, userEmail } = this.state;
     return (
       <header className="p-3 bg-dark text-white">
@@ -57,6 +62,7 @@ class Header extends React.Component {
             <div className="col-2" data-testid="total-field">{totalValue}</div>
           </div>
         </div>
+        { isEditable && <EditExpense /> }
       </header>
     );
   }
@@ -65,11 +71,13 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,
+  isEditable: state.wallet.isEditable,
 });
 
 Header.propTypes = {
-  email: PropTypes.string.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+  email: PropTypes.string,
+  expenses: PropTypes.arrayOf(PropTypes.object),
+  isEditable: PropTypes.bool,
+}.isRequired;
 
 export default connect(mapStateToProps)(Header);

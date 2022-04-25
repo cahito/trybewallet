@@ -3,6 +3,7 @@ import {
   ADD_WALLET,
   DEL_WALLET,
   EDIT_WALLET,
+  UPDATE_WALLET,
   RECEIVE_CURR_FAILURE,
   RECEIVE_RATIOS_FAILURE,
   RECEIVE_CURR_SUCCESS,
@@ -17,6 +18,8 @@ export const addExpense = (value) => ({ type: ADD_WALLET, value });
 export const delExpense = (value) => ({ type: DEL_WALLET, value });
 
 export const editExpense = (value) => ({ type: EDIT_WALLET, value });
+
+export const updateExpense = (value, value2) => ({ type: UPDATE_WALLET, value, value2 });
 
 export const login = (value) => ({ type: LOGIN, value });
 

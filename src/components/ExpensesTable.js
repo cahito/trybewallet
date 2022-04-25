@@ -31,7 +31,6 @@ class ExpensesTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {/* { console.log(expenses) } */}
           { expenses && <ExpensesLines /> }
         </tbody>
         <tfoot>
